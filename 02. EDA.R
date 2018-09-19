@@ -105,3 +105,118 @@ RoBr9p <-
 RoBr9p
 # Safari v chrome?  disproportionate, could be mac users using chrome too
 
+
+## By OS
+RoOS <-
+  train %>% group_by(operatingSystem) %>% summarise(revenue = sum(transactionRevenue, na.rm = T),
+                                                    entries = n())
+RoOSp <-
+  ggplot(RoOS, aes(x = operatingSystem, y = revenue)) + geom_bar(stat = "identity", fill = "steelblue") + geom_line(
+    y = (RoOS$entries / sum(RoOS$entries)) * 1000000000000,
+    group = 1,
+    colour = "orange"
+  ) + scale_y_continuous(sec.axis = sec_axis( ~ . * 0.000000000001, name = "coverage")) + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    
+RoOSp
+# MacOS seems to be spending more than their coverage would suggest
+
+## by mobileDeviceCategory
+RoDC <-
+  train %>% group_by(deviceCategory) %>% summarise(revenue = sum(transactionRevenue, na.rm = T),
+                                                   entries = n())
+RoDCp <-
+  ggplot(RoDC, aes(x = deviceCategory, y = revenue)) + geom_bar(stat = "identity", fill = "steelblue") + geom_line(
+    y = (RoDC$entries / sum(RoDC$entries)) * 1000000000000,
+    group = 1,
+    colour = "orange"
+  ) + scale_y_continuous(sec.axis = sec_axis( ~ . * 0.000000000001, name = "coverage"))
+RoDCp
+# Desktop gets the most revenue with 60% coverage
+
+# Quick check of isMobile vs deviceCategory, see if the flag is accurate
+table(train$isMobile, train$deviceCategory)
+#         desktop mobile tablet
+# FALSE  664369    147     14
+# TRUE      110 208578  30435
+# Seems that they're largely correlated, but not quite the same.  Could be stuff like "use desktop site"
+
+## By continent
+RoCON <-
+  train %>% group_by(continent) %>% summarise(revenue = sum(transactionRevenue, na.rm = T),
+                                              entries = n())
+RoCONp <-
+  ggplot(RoCON, aes(x = continent, y = revenue)) + geom_bar(stat = "identity", fill = "steelblue") + geom_line(
+    y = (RoCON$entries / sum(RoCON$entries)) * 1000000000000,
+    group = 1,
+    colour = "orange"
+  ) + scale_y_continuous(sec.axis = sec_axis( ~ . * 0.000000000001, name = "coverage"))
+RoCONp
+# Americas outweigh everything by a lot, makes up ~50% 
+
+## By subcontinent
+RoSCON <-
+  train %>% group_by(subContinent) %>% summarise(revenue = sum(transactionRevenue, na.rm = T),
+                                                 entries = n())
+RoSCONp <-
+  ggplot(RoSCON, aes(x = subContinent, y = revenue)) + geom_bar(stat = "identity", fill = "steelblue") + geom_line(
+    y = (RoSCON$entries / sum(RoSCON$entries)) * 1000000000000,
+    group = 1,
+    colour = "orange"
+  ) + scale_y_continuous(sec.axis = sec_axis( ~ . * 0.000000000001, name = "coverage"))+ theme(axis.text.x = element_text(angle = 45, hjust = 1))
+RoSCONp
+# Specifically north america, might be worth grouping
+
+## By campaign
+RoCMP <-
+  train %>% group_by(campaign) %>% summarise(revenue = sum(transactionRevenue, na.rm = T),
+                                             entries = n())
+RoCMPp <-
+  ggplot(RoCMP, aes(x = campaign, y = revenue)) + geom_bar(stat = "identity", fill = "steelblue") + geom_line(
+    y = (RoCMP$entries / sum(RoCMP$entries)) * 1000000000000,
+    group = 1,
+    colour = "orange"
+  ) + scale_y_continuous(sec.axis = sec_axis( ~ . * 0.000000000001, name = "coverage"))+ theme(axis.text.x = element_text(angle = 45, hjust = 1))
+RoCMPp
+# Mostly not set, proportionally there may be big differences for the very rare classes
+# May be worth grouping AW? Data Share?
+
+## By source
+RoSRC <-
+  train %>% group_by(source) %>% summarise(revenue = sum(transactionRevenue, na.rm = T),
+                                           entries = n())
+RoSRCp <-
+  ggplot(RoSRC, aes(x = source, y = revenue)) + geom_bar(stat = "identity", fill = "steelblue") + geom_line(
+    y = (RoSRC$entries / sum(RoSRC$entries)) * 1000000000000,
+    group = 1,
+    colour = "orange"
+  ) + scale_y_continuous(sec.axis = sec_axis( ~ . * 0.000000000001, name = "coverage"))
+RoSRCp
+# way too many sources
+# group by string? do a freq with . as delimiter?
+
+
+## by medium
+RoMED <-
+  train %>% group_by(medium) %>% summarise(revenue = sum(transactionRevenue, na.rm = T),
+                                           entries = n())
+RoMEDp <-
+  ggplot(RoMED, aes(x = medium, y = revenue)) + geom_bar(stat = "identity", fill = "steelblue") + geom_line(
+    y = (RoMED$entries / sum(RoMED$entries)) * 1000000000000,
+    group = 1,
+    colour = "orange"
+  ) + scale_y_continuous(sec.axis = sec_axis( ~ . * 0.000000000001, name = "coverage"))
+RoMEDp
+# Referral, none, organic DESC are top 3
+# not sure what diff is between none and not set is
+
+## by isTrueDirect
+RoITD <-
+  train %>% group_by(isTrueDirect) %>% summarise(revenue = sum(transactionRevenue, na.rm = T),
+                                                 entries = n())
+RoITDp <-
+  ggplot(RoITD, aes(x = isTrueDirect, y = revenue)) + geom_bar(stat = "identity", fill = "steelblue") + geom_line(
+    y = (RoITD$entries / sum(RoITD$entries)) * 1000000000000,
+    group = 1,
+    colour = "orange"
+  ) + scale_y_continuous(sec.axis = sec_axis( ~ . * 0.000000000001, name = "coverage"))
+RoITDp
