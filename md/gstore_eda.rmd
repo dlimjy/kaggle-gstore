@@ -1,0 +1,20 @@
+---
+title: "Gstore EDA"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## EDA for Gstore Kaggle competition
+```{r package_setup, echo = T, results = 'hide'}
+pkgs <- c("tidyverse", "h2o", "gbm", "rpart", "data.table", "ROCR", "lubridate", "xgboost")
+lapply(pkgs, require, character.only = TRUE)
+```
+
+
+
+
+
+
