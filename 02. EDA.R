@@ -88,7 +88,7 @@ RoBrp <-
     y = (RoBr$entries / sum(RoBr$entries)) * 1000000000000,
     group = 1,
     colour = "orange"
-  ) + scale_y_continuous(sec.axis = sec_axis( ~ . * 0.000000000001, name = "coverage"))
+  ) + scale_y_continuous(sec.axis = sec_axis( ~ . * 0.000000000001, name = "coverage")) + theme(axis.text.x = element_text(angle = 45, hjust = 1))
 RoBrp
 
 # So many niche browsers,  let's take the top 10?
@@ -105,6 +105,17 @@ RoBr9p <-
 RoBr9p
 # Safari v chrome?  disproportionate, could be mac users using chrome too
 
+# Use grouped browser
+RoBr <-
+  train %>% group_by(browserGrouped) %>% summarise(revenue = sum(transactionRevenue, na.rm = T),
+                                            entries = n())
+RoBrp <-
+  ggplot(RoBr, aes(x = browserGrouped, y = revenue)) + geom_bar(stat = "identity", fill = "steelblue") + geom_line(
+    y = (RoBr$entries / sum(RoBr$entries)) * 1000000000000,
+    group = 1,
+    colour = "orange"
+  ) + scale_y_continuous(sec.axis = sec_axis( ~ . * 0.000000000001, name = "coverage")) + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+RoBrp
 
 ## By OS
 RoOS <-
